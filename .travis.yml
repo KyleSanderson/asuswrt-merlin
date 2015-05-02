@@ -1,0 +1,22 @@
+git:
+  depth: 1
+language: cpp
+compiler:
+  - gcc
+before_install:
+  - sudo apt-get update -qq
+install:
+  - sudo apt-get install autoconf automake bash bison bzip2 diffutils file flex m4 g++ gawk groff-base libncurses-dev libtool libslang2 make patch perl pkg-config shtool subversion tar texinfo zlib1g zlib1g-dev git-core gettext libexpat1-dev libssl-dev cvs gperf unzip python libxml-parser-perl gcc-multilib gconf-editor libxml2-dev g++-4.4 g++-multilib gitk libncurses5 mtd-utils libncurses5-dev libstdc++6-4.4-dev libvorbis-dev g++-4.4-multilib git autopoint autogen sed build-essential intltool libelf1:i386 libglib2.0-dev
+  - sudo apt-get install lib32z1-dev lib32stdc++6
+  - sudo apt-get update -qq
+before_script:
+  - CHECKOUT_DIR=$PWD
+  - sudo ln -s $PWD/tools/brcm /opt/brcm
+  - sudo ln -s $PWD/release/src-rt-6.x.4708/toolchains/hndtools-arm-linux-2.6.36-uclibc-4.5.3 /opt/brcm-arm
+  - sudo mkdir -p /media/ASUSWRT/
+  - sudo ln -s $PWD /media/ASUSWRT/asuswrt-merlin
+script:
+  - export PATH=$PATH:/opt/brcm/hndtools-mipsel-linux/bin:/opt/brcm/hndtools-mipsel-uclibc/bin:/opt/brcm-arm/bin
+  - cd release/src-rt-6.x.4708
+  - make clean | tee /dev/null
+  - make R7000 | tee out.txt
